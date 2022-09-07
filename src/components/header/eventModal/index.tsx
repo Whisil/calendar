@@ -13,8 +13,9 @@ import {
   Input,
   Textarea,
   Flex,
+  Text,
 } from "@chakra-ui/react";
-import { AddIcon } from "@chakra-ui/icons";
+import { AddIcon, DeleteIcon } from "@chakra-ui/icons";
 import React, { useContext, useState } from "react";
 
 import styles from "./styles.module.css";
@@ -24,16 +25,26 @@ import GlobalContext from "../../context/globalContext";
 const EventModal = ({
   children,
   variant,
+  selectedEvent,
 }: {
   children?: React.ReactNode;
   variant?: "add";
+  selectedEvent?: any;
 }) => {
   const { dispatchCalEvent } = useContext(GlobalContext);
 
-  const [title, setTitle] = useState<string>(``);
-  const [description, setDescription] = useState<string>(``);
-  const [date, setDate] = useState<string>(dayjs().format("YYYY-MM-DD"));
-  const [beginTime, setBeginTime] = useState<string>(``);
+  const [title, setTitle] = useState<string>(
+    selectedEvent ? selectedEvent.title : ``
+  );
+  const [description, setDescription] = useState<string>(
+    selectedEvent && selectedEvent.description ? selectedEvent.description : ``
+  );
+  const [date, setDate] = useState<string>(
+    selectedEvent ? selectedEvent.date : dayjs().format("YYYY-MM-DD")
+  );
+  const [beginTime, setBeginTime] = useState<string>(
+    selectedEvent && selectedEvent.beginTime ? selectedEvent.beginTime : ``
+  );
   const [requiredInput, setRequiredInput] = useState<boolean>(false);
 
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -55,9 +66,25 @@ const EventModal = ({
       description,
       date,
       beginTime,
-      createdAt: dayjs().format("DD.MM.YYYY HH:mm"),
+      createdAt: selectedEvent
+        ? selectedEvent.createdAt
+        : dayjs().format("DD.MM.YYYY HH:mm"),
     };
-    dispatchCalEvent({ type: "push", payload: calendarEvent });
+    if (selectedEvent) {
+      dispatchCalEvent({ type: "update", payload: calendarEvent });
+    } else {
+      dispatchCalEvent({ type: "push", payload: calendarEvent });
+    }
+  }
+
+  function handleOpen() {
+    onOpen();
+    if (selectedEvent) {
+      setTitle(selectedEvent.title);
+      selectedEvent.description && setDescription(selectedEvent.description);
+      setDate(selectedEvent.date);
+      selectedEvent.beginTime && setBeginTime(selectedEvent.beginTime);
+    }
   }
 
   return (
@@ -69,17 +96,27 @@ const EventModal = ({
           w="48px"
           colorScheme="twitter"
           boxShadow="xl"
-          onClick={onOpen}
+          onClick={handleOpen}
         >
           <AddIcon />
         </Button>
       ) : (
-        <div onClick={onOpen}>{children}</div>
+        <div onClick={handleOpen}>{children}</div>
       )}
       <Modal isOpen={isOpen} onClose={handleClose}>
         <ModalOverlay />
         <ModalContent>
-          <ModalHeader>Add new idea item</ModalHeader>
+          <ModalHeader>
+            <Text>
+              {selectedEvent ? `Edit idea item` : `Add new idea item`}
+            </Text>
+            {selectedEvent && (
+              <Text fontWeight="normal" fontSize="14px" color="gray.600">
+                Created at: {selectedEvent.createdAt}
+              </Text>
+            )}
+          </ModalHeader>
+
           <ModalCloseButton />
           <form>
             <ModalBody>
@@ -91,6 +128,7 @@ const EventModal = ({
                   borderRadius="0"
                   borderBottom="1px"
                   borderColor={requiredInput ? "crimson" : "gray.200"}
+                  value={title}
                   onChange={(e) => {
                     setTitle(e.target.value.trim());
                     if (title.length !== 0) {
@@ -114,6 +152,7 @@ const EventModal = ({
                   minH="32"
                   style={{ resize: "none" }}
                   onChange={(e) => setDescription(e.target.value)}
+                  value={description}
                 />
               </FormControl>
               <Flex justify="space-between" align="flex-end">
@@ -153,12 +192,28 @@ const EventModal = ({
                     borderBottom="1px"
                     borderColor="gray.200"
                     onChange={(e) => setBeginTime(e.target.value)}
+                    value={beginTime}
                   />
                 </FormControl>
               </Flex>
             </ModalBody>
 
             <ModalFooter>
+              {selectedEvent && (
+                <Button
+                  onClick={() => {
+                    dispatchCalEvent({
+                      type: "delete",
+                      payload: selectedEvent,
+                    });
+                    handleClose();
+                  }}
+                  colorScheme="red"
+                  mr={3}
+                >
+                  <DeleteIcon />
+                </Button>
+              )}
               <Button
                 bg="#000"
                 color="#fff"
@@ -174,13 +229,11 @@ const EventModal = ({
                   bg: "rgba(0, 0, 0, 0.25)",
                   cursor: "not-allowed",
                 }}
-                mr={3}
                 onClick={handleSubmit}
                 isDisabled={title.length === 0 || date.length === 0}
               >
                 Save
               </Button>
-              <Button variant="ghost">Secondary Action</Button>
             </ModalFooter>
           </form>
         </ModalContent>

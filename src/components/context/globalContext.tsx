@@ -10,6 +10,7 @@ const GlobalContext = React.createContext<{
   selectedDate: any;
   setSelectedDate: Function;
   dispatchCalEvent: Function;
+  savedEvents: any[];
 }>({
   monthIndex: 0,
   setMonthIndex: (index: number) => {},
@@ -26,12 +27,13 @@ const GlobalContext = React.createContext<{
     type: string;
     payload: {
       title: string;
-      description: string;
+      description?: string;
       date: string;
-      beginTime: string;
+      beginTime?: string;
       createdAt: string;
     };
   }) => {},
+  savedEvents: [],
 });
 
 export default GlobalContext;

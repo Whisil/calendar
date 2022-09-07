@@ -84,6 +84,7 @@ export default function ContextWrapper({
         selectedDate,
         setSelectedDate,
         dispatchCalEvent,
+        savedEvents,
       }}
     >
       {children}

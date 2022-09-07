@@ -1,18 +1,32 @@
 import { Button, Flex, GridItem, Text } from "@chakra-ui/react";
 import dayjs from "dayjs";
-import { useContext } from "react";
+import { useContext, useEffect, useState } from "react";
 import GlobalContext from "../../context/globalContext";
+import EventModal from "../../header/eventModal";
 
 interface DayProps {
   day: any;
   variant?: "picker";
   onClick?(): void;
   selected?: boolean;
+  events?: any[];
 }
 
-const Day = ({ day, variant, onClick, selected }: DayProps) => {
+const Day = ({ day, variant, onClick, selected, events = [] }: DayProps) => {
   const { monthIndex, datePickerMonth } = useContext(GlobalContext);
-  
+
+  const [dayEvents, setDayEvents] = useState<any[]>([]);
+
+  useEffect(() => {
+    if (events.length !== 0) {
+      setDayEvents(() =>
+        events.filter(
+          (evt) => evt.title && evt.date === day.format("YYYY-MM-DD")
+        )
+      );
+    }
+  }, [events]);
+
   return (
     <GridItem
       h={variant === "picker" ? "10" : "48"}
@@ -63,6 +77,27 @@ const Day = ({ day, variant, onClick, selected }: DayProps) => {
             {day.format("D")}
           </Text>
         </Button>
+      )}
+      {dayEvents.map(
+        (item: {
+          title: string;
+          description?: string;
+          date: string;
+          beginTime: string;
+          createdAt: string;
+        }) => (
+          <EventModal key={item.createdAt} selectedEvent={item}>
+            <Button
+              size="xs"
+              colorScheme="gray"
+              w="100%"
+              justifyContent="flex-start"
+              mb="1"
+            >
+              {item.title}
+            </Button>
+          </EventModal>
+        )
       )}
     </GridItem>
   );
