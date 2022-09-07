@@ -1,7 +1,7 @@
 import { Button, Flex, GridItem, Text } from "@chakra-ui/react";
 import dayjs from "dayjs";
 import { useContext, useEffect, useState } from "react";
-import GlobalContext from "../../context/globalContext";
+import GlobalContext from "../../../context/globalContext";
 import EventModal from "../../header/eventModal";
 
 interface DayProps {
@@ -13,7 +13,7 @@ interface DayProps {
 }
 
 const Day = ({ day, variant, onClick, selected, events = [] }: DayProps) => {
-  const { monthIndex, datePickerMonth } = useContext(GlobalContext);
+  const { monthIndex } = useContext(GlobalContext);
 
   const [dayEvents, setDayEvents] = useState<any[]>([]);
 
@@ -21,11 +21,12 @@ const Day = ({ day, variant, onClick, selected, events = [] }: DayProps) => {
     if (events.length !== 0) {
       setDayEvents(() =>
         events.filter(
-          (evt) => evt.title && evt.date === day.format("YYYY-MM-DD")
+          (evt) => evt.date === day.format("YYYY-MM-DD")
         )
       );
+      
     }
-  }, [events]);
+  }, [events, day]);
 
   return (
     <GridItem
@@ -39,9 +40,7 @@ const Day = ({ day, variant, onClick, selected, events = [] }: DayProps) => {
         dayjs(
           new Date(
             dayjs().year(),
-            variant === "picker" && datePickerMonth
-              ? datePickerMonth
-              : monthIndex
+            monthIndex
           )
         ).format("MMMM YYYY") === day.format("MMMM YYYY")
           ? "black"

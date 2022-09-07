@@ -4,29 +4,23 @@ import dayjs from "dayjs";
 import React, { useContext, useEffect, useState } from "react";
 import { getMonth } from "../../../util";
 import Day from "../../calendarGrid/day";
-import GlobalContext from "../../context/globalContext";
+import GlobalContext from "../../../context/globalContext";
 
 const DatePicker = () => {
-  const {
-    setDatePickerMonth,
-    setSelectedDate,
-    selectedDate,
-    setYear,
-    year,
-    monthIndex,
-  } = useContext(GlobalContext);
+  const { setSelectedDate, selectedDate, monthIndex } =
+    useContext(GlobalContext);
   const [currentMonthIndex, setCurrentMonthIndex] =
     useState<number>(monthIndex);
   const [currentMonth, setCurrentMonth] = useState<any[][]>(
-    getMonth(monthIndex, year)
+    getMonth(monthIndex, dayjs().year())
   );
 
   useEffect(() => {
-    setCurrentMonth(getMonth(currentMonthIndex, year));
+    setCurrentMonth(getMonth(currentMonthIndex, dayjs().year()));
   }, [currentMonthIndex]);
 
   const handleDaySelected = (day: any) => {
-    if (selectedDate && selectedDate[0] === day.format("DD MMMM YYYY")) {
+    if (selectedDate && selectedDate === day.format("YYYY-MM-DD")) {
       return true;
     } else {
       return false;
@@ -59,9 +53,8 @@ const DatePicker = () => {
         </Button>
         <Text>
           {dayjs(new Date(dayjs().year(), currentMonthIndex)).format(
-            "MMMM YYYY "
+            "MMMM YYYY"
           )}
-          {year}
         </Text>
         <Button
           minW="unset"
@@ -92,21 +85,15 @@ const DatePicker = () => {
                 variant="picker"
                 selected={handleDaySelected(day)}
                 onClick={() => {
-                  setDatePickerMonth(currentMonthIndex);
-                  setYear(day.format("YYYY"));
-                  setSelectedDate([
-                    day.format("DD MMMM YYYY"),
-                    day.format("M"),
-                    day.format("YYYY"),
-                  ]);
+                  setSelectedDate(day);
                   localStorage.setItem(
                     "selectedDate",
                     JSON.stringify([
-                      day.format("DD MMMM YYYY"),
-                      day.format("M"),
-                      day.format("YYYY"),
+                      currentMonthIndex,
+                      day.format("YYYY-MM-DD"),
                     ])
                   );
+                  window.dispatchEvent(new Event("storage"));
                 }}
               />
             ))}

@@ -16,11 +16,11 @@ import {
   Text,
 } from "@chakra-ui/react";
 import { AddIcon, DeleteIcon } from "@chakra-ui/icons";
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 
 import styles from "./styles.module.css";
 import dayjs from "dayjs";
-import GlobalContext from "../../context/globalContext";
+import GlobalContext from "../../../context/globalContext";
 
 const EventModal = ({
   children,
@@ -31,21 +31,25 @@ const EventModal = ({
   variant?: "add";
   selectedEvent?: any;
 }) => {
-  const { dispatchCalEvent } = useContext(GlobalContext);
+  const { dispatchCalEvent, selectedDate } = useContext(GlobalContext);
 
   const [title, setTitle] = useState<string>(``);
   const [description, setDescription] = useState<string>(``);
-  const [date, setDate] = useState<string>(dayjs().format("YYYY-MM-DD"));
+  const [date, setDate] = useState<string>(selectedDate);
   const [beginTime, setBeginTime] = useState<string>(``);
   const [requiredInput, setRequiredInput] = useState<boolean>(false);
 
   const { isOpen, onOpen, onClose } = useDisclosure();
 
+  useEffect(() => {
+    setDate(selectedDate);
+  }, [selectedDate])
+
   function handleClose() {
     onClose();
     setTitle(``);
     setDescription(``);
-    setDate(dayjs().format("YYYY-MM-DD"));
+    setDate(selectedDate);
     setBeginTime(``);
     setRequiredInput(false);
   }

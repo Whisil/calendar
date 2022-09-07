@@ -1,7 +1,7 @@
 import { Box } from "@chakra-ui/react";
 import { useContext, useEffect, useState } from "react";
 import CalendarGrid from "./components/calendarGrid";
-import GlobalContext from "./components/context/globalContext";
+import GlobalContext from "./context/globalContext";
 import Header from "./components/header";
 import { getMonth } from "./util";
 

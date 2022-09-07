@@ -6,13 +6,14 @@ import {
 import { Box, Button, Flex, Text } from "@chakra-ui/react";
 import dayjs from "dayjs";
 import { useContext, useState } from "react";
-import GlobalContext from "../context/globalContext";
+import GlobalContext from "../../context/globalContext";
 import DatePicker from "./datePicker";
 import EventModal from "./eventModal";
 
 const Header = () => {
   const [showDatePicker, setShowDatePicker] = useState<boolean>(false);
-  const { monthIndex, year, setMonthIndex } = useContext(GlobalContext);
+
+  const { monthIndex, setMonthIndex } = useContext(GlobalContext);
 
   return (
     <Flex justify="space-between" mb="24px">
@@ -31,9 +32,7 @@ const Header = () => {
             <ChevronLeftIcon boxSize="16px" />
           </Button>
           <Text>
-            {`${dayjs(new Date(dayjs().year(), monthIndex)).format(
-              "MMMM YYYY"
-            )} ${year}`}
+            {dayjs(new Date(dayjs().year(), monthIndex)).format("MMMM YYYY")}
           </Text>
           <Button
             minW="unset"
