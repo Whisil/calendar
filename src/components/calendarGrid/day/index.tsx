@@ -13,18 +13,14 @@ interface DayProps {
 }
 
 const Day = ({ day, variant, onClick, selected, events = [] }: DayProps) => {
-  const { monthIndex } = useContext(GlobalContext);
-
+  const { monthIndex, selectedDate } = useContext(GlobalContext);
   const [dayEvents, setDayEvents] = useState<any[]>([]);
 
   useEffect(() => {
-    if (events.length !== 0) {
+    if (variant !== "picker") {
       setDayEvents(() =>
-        events.filter(
-          (evt) => evt.date === day.format("YYYY-MM-DD")
-        )
+        events.filter((evt) => evt.date === day.format("YYYY-MM-DD"))
       );
-      
     }
   }, [events, day]);
 
@@ -37,18 +33,16 @@ const Day = ({ day, variant, onClick, selected, events = [] }: DayProps) => {
       borderRadius={variant !== "picker" ? 0 : "md"}
       p={variant !== "picker" ? "2" : 0}
       color={
-        dayjs(
-          new Date(
-            dayjs().year(),
-            monthIndex
-          )
-        ).format("MMMM YYYY") === day.format("MMMM YYYY")
+        dayjs(new Date(dayjs().year(), monthIndex)).format("MMMM YYYY") ===
+        day.format("MMMM YYYY")
           ? "black"
           : "blackAlpha.400"
       }
       bgColor={
         day.format("DD-MM-YY") === dayjs().format("DD-MM-YY")
           ? "rgb(72, 187, 120, 0.3)"
+          : day.format("YYYY-MM-DD") === selectedDate
+          ? "gray.200"
           : "transparent"
       }
       transition="color .2s ease"

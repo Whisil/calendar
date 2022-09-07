@@ -40,7 +40,7 @@ const EventModal = ({
   const [requiredInput, setRequiredInput] = useState<boolean>(false);
 
   const { isOpen, onOpen, onClose } = useDisclosure();
-
+  
   useEffect(() => {
     setDate(selectedDate);
   }, [selectedDate])
