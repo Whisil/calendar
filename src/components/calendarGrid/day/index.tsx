@@ -72,7 +72,7 @@ const Day = ({ day, variant, onClick, selected, events = [] }: DayProps) => {
           </Text>
         </Button>
       )}
-      <Box overflowY="scroll" maxH="36">
+      <Box overflowY="auto" maxH="36" h="100%">
         {dayEvents.map(
           (item: {
             id: string;

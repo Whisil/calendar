@@ -137,7 +137,7 @@ const EventModal = ({
                   borderColor={requiredInputTitle ? "crimson" : "gray.200"}
                   value={title}
                   onChange={(e) => {
-                    setTitle(e.target.value.trim());
+                    setTitle(e.target.value);
                     if (title.length !== 0) {
                       setRequiredInputTitle(false);
                     }
@@ -238,7 +238,7 @@ const EventModal = ({
                   cursor: "not-allowed",
                 }}
                 onClick={handleSubmit}
-                isDisabled={title.length === 0 || date.length === 0}
+                isDisabled={title.trim().length === 0 || date.length === 0}
                 aria-label="save event"
               >
                 Save
