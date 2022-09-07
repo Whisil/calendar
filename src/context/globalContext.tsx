@@ -18,11 +18,13 @@ const GlobalContext = React.createContext<{
   }: {
     type: string;
     payload: {
+      id: string;
       title: string;
       description?: string;
       date: string;
       beginTime?: string;
       createdAt: string;
+      updatedAt?: string;
     };
   }) => {},
   savedEvents: [],

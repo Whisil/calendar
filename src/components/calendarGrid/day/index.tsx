@@ -73,13 +73,14 @@ const Day = ({ day, variant, onClick, selected, events = [] }: DayProps) => {
       )}
       {dayEvents.map(
         (item: {
+          id: string;
           title: string;
           description?: string;
           date: string;
           beginTime: string;
           createdAt: string;
         }) => (
-          <EventModal key={item.createdAt} selectedEvent={item}>
+          <EventModal key={item.id} selectedEvent={item}>
             <Button
               size="xs"
               colorScheme="gray"

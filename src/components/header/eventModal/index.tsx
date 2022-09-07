@@ -60,13 +60,18 @@ const EventModal = ({
     handleClose();
     e.preventDefault();
     const calendarEvent = {
+      id: dayjs().format("DD.MM.YYYY HH:mm:ss:ms"),
       title,
       description,
       date,
       beginTime,
       createdAt: selectedEvent
         ? selectedEvent.createdAt
-        : dayjs().format("DD.MM.YYYY HH:mm:ss:ms"),
+        : dayjs().format("DD.MM.YYYY HH:mm"),
+      updatedAt:
+        selectedEvent &&
+        selectedEvent.createdAt &&
+        dayjs().format("DD.MM.YYYY HH:mm"),
     };
     if (selectedEvent) {
       dispatchCalEvent({ type: "update", payload: calendarEvent });
@@ -110,7 +115,9 @@ const EventModal = ({
             </Text>
             {selectedEvent && (
               <Text fontWeight="normal" fontSize="14px" color="gray.600">
-                Created at: {selectedEvent.createdAt}
+                {selectedEvent.updatedAt
+                  ? `Updated at: ${selectedEvent.updatedAt}`
+                  : `Created at: ${selectedEvent.createdAt}`}
               </Text>
             )}
           </ModalHeader>
