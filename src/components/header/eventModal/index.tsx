@@ -33,18 +33,10 @@ const EventModal = ({
 }) => {
   const { dispatchCalEvent } = useContext(GlobalContext);
 
-  const [title, setTitle] = useState<string>(
-    selectedEvent ? selectedEvent.title : ``
-  );
-  const [description, setDescription] = useState<string>(
-    selectedEvent && selectedEvent.description ? selectedEvent.description : ``
-  );
-  const [date, setDate] = useState<string>(
-    selectedEvent ? selectedEvent.date : dayjs().format("YYYY-MM-DD")
-  );
-  const [beginTime, setBeginTime] = useState<string>(
-    selectedEvent && selectedEvent.beginTime ? selectedEvent.beginTime : ``
-  );
+  const [title, setTitle] = useState<string>(``);
+  const [description, setDescription] = useState<string>(``);
+  const [date, setDate] = useState<string>(dayjs().format("YYYY-MM-DD"));
+  const [beginTime, setBeginTime] = useState<string>(``);
   const [requiredInput, setRequiredInput] = useState<boolean>(false);
 
   const { isOpen, onOpen, onClose } = useDisclosure();
