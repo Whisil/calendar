@@ -4,12 +4,15 @@ import GlobalContext from "../../context/globalContext";
 import Day from "./day";
 
 const CalendarGrid = ({ month }: { month: [][] }) => {
-
-  const {savedEvents} = useContext(GlobalContext);
+  const { savedEvents } = useContext(GlobalContext);
 
   return (
     <Grid
-      templateColumns="repeat(7, 1fr)"
+      templateColumns={{
+        base: "repeat(2, 1fr)",
+        md: "repeat(3, 1fr)",
+        lg: "repeat(7, 1fr)",
+      }}
       borderTop="2px"
       borderBottom="1px"
       borderRight="1px"

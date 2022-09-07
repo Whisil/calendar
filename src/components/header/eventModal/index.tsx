@@ -37,13 +37,14 @@ const EventModal = ({
   const [description, setDescription] = useState<string>(``);
   const [date, setDate] = useState<string>(selectedDate);
   const [beginTime, setBeginTime] = useState<string>(``);
-  const [requiredInput, setRequiredInput] = useState<boolean>(false);
+  const [requiredInputTitle, setRequiredInputTitle] = useState<boolean>(false);
+  const [requiredInputDate, setRequiredInputDate] = useState<boolean>(false);
 
   const { isOpen, onOpen, onClose } = useDisclosure();
-  
+
   useEffect(() => {
     setDate(selectedDate);
-  }, [selectedDate])
+  }, [selectedDate]);
 
   function handleClose() {
     onClose();
@@ -51,7 +52,8 @@ const EventModal = ({
     setDescription(``);
     setDate(selectedDate);
     setBeginTime(``);
-    setRequiredInput(false);
+    setRequiredInputTitle(false);
+    setRequiredInputDate(false);
   }
 
   function handleSubmit(e: any) {
@@ -101,7 +103,7 @@ const EventModal = ({
       )}
       <Modal isOpen={isOpen} onClose={handleClose}>
         <ModalOverlay />
-        <ModalContent>
+        <ModalContent mx={4}>
           <ModalHeader>
             <Text>
               {selectedEvent ? `Edit idea item` : `Add new idea item`}
@@ -120,21 +122,22 @@ const EventModal = ({
                 <FormHelperText>Title *</FormHelperText>
                 <Input
                   type="text"
+                  autoComplete="off"
                   variant="unstyled"
                   borderRadius="0"
                   borderBottom="1px"
-                  borderColor={requiredInput ? "crimson" : "gray.200"}
+                  borderColor={requiredInputTitle ? "crimson" : "gray.200"}
                   value={title}
                   onChange={(e) => {
                     setTitle(e.target.value.trim());
                     if (title.length !== 0) {
-                      setRequiredInput(false);
+                      setRequiredInputTitle(false);
                     }
                   }}
                   onBlur={() =>
                     title.length === 0
-                      ? setRequiredInput(true)
-                      : setRequiredInput(false)
+                      ? setRequiredInputTitle(true)
+                      : setRequiredInputTitle(false)
                   }
                 />
               </FormControl>
@@ -160,18 +163,18 @@ const EventModal = ({
                     borderRadius="0"
                     borderBottom="1px"
                     className={styles.datePickerModal}
-                    borderColor={requiredInput ? "crimson" : "gray.200"}
+                    borderColor={requiredInputDate ? "crimson" : "gray.200"}
                     value={date}
                     onChange={(e) => {
                       setDate(e.target.value);
                       if (date.length !== 0) {
-                        setRequiredInput(false);
+                        setRequiredInputDate(false);
                       }
                     }}
                     onBlur={() =>
                       date.length === 0
-                        ? setRequiredInput(true)
-                        : setRequiredInput(false)
+                        ? setRequiredInputDate(true)
+                        : setRequiredInputDate(false)
                     }
                   />
                 </FormControl>

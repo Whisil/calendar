@@ -5,7 +5,7 @@ import {
 } from "@chakra-ui/icons";
 import { Box, Button, Flex, Text } from "@chakra-ui/react";
 import dayjs from "dayjs";
-import { useContext, useState } from "react";
+import { useContext, useEffect, useRef, useState } from "react";
 import GlobalContext from "../../context/globalContext";
 import DatePicker from "./datePicker";
 import EventModal from "./eventModal";
@@ -14,6 +14,20 @@ const Header = () => {
   const [showDatePicker, setShowDatePicker] = useState<boolean>(false);
 
   const { monthIndex, setMonthIndex } = useContext(GlobalContext);
+
+  const datePickerRef = useRef<HTMLInputElement>(null);
+
+  useEffect(() => {
+    if (!showDatePicker) return;
+    function handleOutsideClick(e: Event) {
+      if (datePickerRef.current && !datePickerRef.current.contains(e.target as Document)) {
+        setShowDatePicker(false);
+      }
+    }
+    window.addEventListener(`click`, handleOutsideClick);
+
+    return () => window.removeEventListener(`click`, handleOutsideClick);
+  }, [showDatePicker]);
 
   return (
     <Flex justify="space-between" mb="24px">
@@ -46,7 +60,7 @@ const Header = () => {
           </Button>
         </Flex>
 
-        <Box pos="relative">
+        <Box pos="relative" ref={datePickerRef}>
           <Button
             isActive={showDatePicker}
             bg="transparent"
