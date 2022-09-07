@@ -66,7 +66,7 @@ const EventModal = ({
       beginTime,
       createdAt: selectedEvent
         ? selectedEvent.createdAt
-        : dayjs().format("DD.MM.YYYY HH:mm:ss"),
+        : dayjs().format("DD.MM.YYYY HH:mm:ss:ms"),
     };
     if (selectedEvent) {
       dispatchCalEvent({ type: "update", payload: calendarEvent });
