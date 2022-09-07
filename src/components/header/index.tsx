@@ -42,6 +42,7 @@ const Header = () => {
             p="0"
             bg="transparent"
             onClick={() => setMonthIndex(monthIndex - 1)}
+            aria-label="previous month"
           >
             <ChevronLeftIcon boxSize="16px" />
           </Button>
@@ -55,6 +56,7 @@ const Header = () => {
             p="0"
             bg="transparent"
             onClick={() => setMonthIndex(monthIndex + 1)}
+            aria-label="next month"
           >
             <ChevronRightIcon boxSize="16px" />
           </Button>
@@ -69,6 +71,7 @@ const Header = () => {
             onClick={() =>
               setShowDatePicker((showDatePicker) => !showDatePicker)
             }
+            aria-label="show date picker"
           >
             <CalendarIcon />
           </Button>

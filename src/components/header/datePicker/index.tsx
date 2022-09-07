@@ -48,6 +48,7 @@ const DatePicker = () => {
           onClick={() =>
             setCurrentMonthIndex((currentMonthIndex) => currentMonthIndex - 1)
           }
+          aria-label="date picker previous month"
         >
           <ChevronLeftIcon boxSize="16px" />
         </Button>
@@ -65,6 +66,7 @@ const DatePicker = () => {
           onClick={() =>
             setCurrentMonthIndex((currentMonthIndex) => currentMonthIndex + 1)
           }
+          aria-label="date picker next month"
         >
           <ChevronRightIcon boxSize="16px" />
         </Button>

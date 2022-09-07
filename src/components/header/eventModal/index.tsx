@@ -100,6 +100,7 @@ const EventModal = ({
           colorScheme="twitter"
           boxShadow="xl"
           onClick={handleOpen}
+          aria-label="open add event modal"
         >
           <AddIcon />
         </Button>
@@ -122,7 +123,7 @@ const EventModal = ({
             )}
           </ModalHeader>
 
-          <ModalCloseButton />
+          <ModalCloseButton aria-label="close modal" />
           <form>
             <ModalBody>
               <FormControl mb="8">
@@ -216,6 +217,7 @@ const EventModal = ({
                   }}
                   colorScheme="red"
                   mr={3}
+                  aria-label="delete event"
                 >
                   <DeleteIcon />
                 </Button>
@@ -237,6 +239,7 @@ const EventModal = ({
                 }}
                 onClick={handleSubmit}
                 isDisabled={title.length === 0 || date.length === 0}
+                aria-label="save event"
               >
                 Save
               </Button>

@@ -1,4 +1,4 @@
-import { Button, Flex, GridItem, Text } from "@chakra-ui/react";
+import { Box, Button, Flex, GridItem, Text } from "@chakra-ui/react";
 import dayjs from "dayjs";
 import { useContext, useEffect, useState } from "react";
 import GlobalContext from "../../../context/globalContext";
@@ -65,34 +65,38 @@ const Day = ({ day, variant, onClick, selected, events = [] }: DayProps) => {
           variant="ghost"
           onClick={onClick}
           isActive={selected}
+          aria-label="day selection"
         >
           <Text fontWeight="bold" fontSize="14px">
             {day.format("D")}
           </Text>
         </Button>
       )}
-      {dayEvents.map(
-        (item: {
-          id: string;
-          title: string;
-          description?: string;
-          date: string;
-          beginTime: string;
-          createdAt: string;
-        }) => (
-          <EventModal key={item.id} selectedEvent={item}>
-            <Button
-              size="xs"
-              colorScheme="gray"
-              w="100%"
-              justifyContent="flex-start"
-              mb="1"
-            >
-              {item.title}
-            </Button>
-          </EventModal>
-        )
-      )}
+      <Box overflowY="scroll" maxH="36">
+        {dayEvents.map(
+          (item: {
+            id: string;
+            title: string;
+            description?: string;
+            date: string;
+            beginTime: string;
+            createdAt: string;
+          }) => (
+            <EventModal key={item.id} selectedEvent={item}>
+              <Button
+                size="xs"
+                colorScheme="gray"
+                w="100%"
+                justifyContent="flex-start"
+                mb="1"
+                aria-label="event selection"
+              >
+                {item.title}
+              </Button>
+            </EventModal>
+          )
+        )}
+      </Box>
     </GridItem>
   );
 };
