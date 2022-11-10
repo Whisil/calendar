@@ -6,21 +6,27 @@ import {
 import { Box, Button, Flex, Text } from "@chakra-ui/react";
 import dayjs from "dayjs";
 import { useContext, useEffect, useRef, useState } from "react";
+import { setFilterDate } from "../../api/date";
 import GlobalContext from "../../context/globalContext";
 import DatePicker from "./datePicker";
 import EventModal from "./eventModal";
 
 const Header = () => {
-  const [showDatePicker, setShowDatePicker] = useState<boolean>(false);
-
   const { monthIndex, setMonthIndex } = useContext(GlobalContext);
+
+  const [showDatePicker, setShowDatePicker] = useState<boolean>(false);
+  const [selectedMonthIndex, setSelectedMonthIndex] =
+    useState<number>(monthIndex);
 
   const datePickerRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
     if (!showDatePicker) return;
     function handleOutsideClick(e: Event) {
-      if (datePickerRef.current && !datePickerRef.current.contains(e.target as Document)) {
+      if (
+        datePickerRef.current &&
+        !datePickerRef.current.contains(e.target as Document)
+      ) {
         setShowDatePicker(false);
       }
     }
@@ -28,6 +34,13 @@ const Header = () => {
 
     return () => window.removeEventListener(`click`, handleOutsideClick);
   }, [showDatePicker]);
+
+  useEffect(() => {
+    setMonthIndex(selectedMonthIndex);
+    setFilterDate(selectedMonthIndex);
+
+    window.dispatchEvent(new Event("storage"));
+  }, [selectedMonthIndex, setMonthIndex]);
 
   return (
     <Flex justify="space-between" mb="24px">
@@ -41,7 +54,7 @@ const Header = () => {
             h="24px"
             p="0"
             bg="transparent"
-            onClick={() => setMonthIndex(monthIndex - 1)}
+            onClick={() => setSelectedMonthIndex((prevState) => prevState - 1)}
             aria-label="previous month"
           >
             <ChevronLeftIcon boxSize="16px" />
@@ -55,7 +68,7 @@ const Header = () => {
             h="24px"
             p="0"
             bg="transparent"
-            onClick={() => setMonthIndex(monthIndex + 1)}
+            onClick={() => setSelectedMonthIndex((prevState) => prevState + 1)}
             aria-label="next month"
           >
             <ChevronRightIcon boxSize="16px" />

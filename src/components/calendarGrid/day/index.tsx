@@ -22,7 +22,7 @@ const Day = ({ day, variant, onClick, selected, events = [] }: DayProps) => {
         events.filter((evt) => evt.date === day.format("YYYY-MM-DD"))
       );
     }
-  }, [events, day]);
+  }, [events, day, variant]);
 
   return (
     <GridItem
@@ -41,7 +41,7 @@ const Day = ({ day, variant, onClick, selected, events = [] }: DayProps) => {
       bgColor={
         day.format("DD-MM-YY") === dayjs().format("DD-MM-YY")
           ? "rgb(72, 187, 120, 0.3)"
-          : day.format("YYYY-MM-DD") === selectedDate
+          : selectedDate && day.format("YYYY-MM-DD") === selectedDate
           ? "gray.200"
           : "transparent"
       }

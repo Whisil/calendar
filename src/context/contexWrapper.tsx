@@ -1,6 +1,8 @@
 import dayjs from "dayjs";
 import React, { useEffect, useReducer, useState } from "react";
 import GlobalContext from "./globalContext";
+import { getFilterMonth } from "../api/date";
+import { getEvents, setEvents } from "../api/events";
 
 function savedEventsReducer(
   state: any[],
@@ -24,18 +26,18 @@ function savedEventsReducer(
     case "push":
       return [...state, payload];
     case "update":
-      return state.map((evt: any) =>
-        evt.createdAt === payload.createdAt ? payload : evt
-      );
+      return state.map((evt: any) => {
+        return evt.id === payload.id ? payload : evt;
+      });
     case "delete":
-      return state.filter((evt: any) => evt.createdAt !== payload.createdAt);
+      return state.filter((evt: any) => evt.id !== payload.id);
     default:
       throw new Error();
   }
 }
 
 function initEvents() {
-  const storageEvents = localStorage.getItem("savedEvents");
+  const storageEvents = getEvents();
   const parsedEvents = storageEvents ? JSON.parse(storageEvents) : [];
   return parsedEvents;
 }
@@ -45,10 +47,10 @@ export default function ContextWrapper({
 }: {
   children: React.ReactNode;
 }) {
-  const [monthIndex, setMonthIndex] = useState<number>(dayjs().month());
-  const [selectedDate, setSelectedDate] = useState(
-    dayjs().format("YYYY-MM-DD")
+  const [monthIndex, setMonthIndex] = useState<number>(
+    getFilterMonth() || dayjs().month()
   );
+  const [selectedDate, setSelectedDate] = useState(undefined);
   const [savedEvents, dispatchCalEvent] = useReducer(
     savedEventsReducer,
     [],
@@ -56,15 +58,13 @@ export default function ContextWrapper({
   );
 
   const storageStateHandler = () => {
-    const storage = JSON.parse(localStorage.getItem("selectedDate") as string);
-    if (storage) {
-      setMonthIndex(storage[0]);
-      setSelectedDate(storage[1]);
+    if (getFilterMonth()) {
+      setMonthIndex(getFilterMonth());
     }
   };
 
   useEffect(() => {
-    localStorage.setItem("savedEvents", JSON.stringify(savedEvents));
+    setEvents(savedEvents);
   }, [savedEvents]);
 
   useEffect(() => {

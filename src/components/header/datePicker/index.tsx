@@ -5,6 +5,7 @@ import React, { useContext, useEffect, useState } from "react";
 import { getMonth } from "../../../util";
 import Day from "../../calendarGrid/day";
 import GlobalContext from "../../../context/globalContext";
+import { setFilterDate } from "../../../api/date";
 
 const DatePicker = () => {
   const { setSelectedDate, selectedDate, monthIndex } =
@@ -87,14 +88,8 @@ const DatePicker = () => {
                 variant="picker"
                 selected={handleDaySelected(day)}
                 onClick={() => {
-                  setSelectedDate(day);
-                  localStorage.setItem(
-                    "selectedDate",
-                    JSON.stringify([
-                      currentMonthIndex,
-                      day.format("YYYY-MM-DD"),
-                    ])
-                  );
+                  setSelectedDate(day.format("YYYY-MM-DD"));
+                  setFilterDate(currentMonthIndex);
                   window.dispatchEvent(new Event("storage"));
                 }}
               />

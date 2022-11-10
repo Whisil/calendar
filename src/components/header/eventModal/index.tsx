@@ -35,7 +35,9 @@ const EventModal = ({
 
   const [title, setTitle] = useState<string>(``);
   const [description, setDescription] = useState<string>(``);
-  const [date, setDate] = useState<string>(selectedDate);
+  const [date, setDate] = useState<string>(
+    selectedDate || dayjs().format("YYYY-MM-DD")
+  );
   const [beginTime, setBeginTime] = useState<string>(``);
   const [requiredInputTitle, setRequiredInputTitle] = useState<boolean>(false);
   const [requiredInputDate, setRequiredInputDate] = useState<boolean>(false);
@@ -43,14 +45,13 @@ const EventModal = ({
   const { isOpen, onOpen, onClose } = useDisclosure();
 
   useEffect(() => {
-    setDate(selectedDate);
+    selectedDate && setDate(selectedDate);
   }, [selectedDate]);
 
   function handleClose() {
     onClose();
     setTitle(``);
     setDescription(``);
-    setDate(selectedDate);
     setBeginTime(``);
     setRequiredInputTitle(false);
     setRequiredInputDate(false);
@@ -60,7 +61,9 @@ const EventModal = ({
     handleClose();
     e.preventDefault();
     const calendarEvent = {
-      id: dayjs().format("DD.MM.YYYY HH:mm:ss:ms"),
+      id: selectedEvent
+        ? selectedEvent.id
+        : dayjs().format("DD.MM.YYYY HH:mm:ss:ms"),
       title,
       description,
       date,
@@ -164,7 +167,7 @@ const EventModal = ({
               </FormControl>
               <Flex justify="space-between" align="flex-end">
                 <FormControl w="32">
-                  <FormHelperText>Date</FormHelperText>
+                  <FormHelperText>Date *</FormHelperText>
                   <Input
                     type="date"
                     variant="unstyled"
@@ -180,7 +183,7 @@ const EventModal = ({
                       }
                     }}
                     onBlur={() =>
-                      date.length === 0
+                      date?.length === 0
                         ? setRequiredInputDate(true)
                         : setRequiredInputDate(false)
                     }
