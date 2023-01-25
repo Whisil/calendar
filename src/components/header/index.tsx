@@ -2,14 +2,14 @@ import {
   CalendarIcon,
   ChevronLeftIcon,
   ChevronRightIcon,
-} from "@chakra-ui/icons";
-import { Box, Button, Flex, Text } from "@chakra-ui/react";
-import dayjs from "dayjs";
-import { useContext, useEffect, useRef, useState } from "react";
-import { setFilterDate } from "../../api/date";
-import GlobalContext from "../../context/globalContext";
-import DatePicker from "./datePicker";
-import EventModal from "./eventModal";
+} from '@chakra-ui/icons';
+import { Box, Button, Flex, Text } from '@chakra-ui/react';
+import dayjs from 'dayjs';
+import { useContext, useEffect, useRef, useState } from 'react';
+import { setFilterDate } from '../../api/date';
+import GlobalContext from '../../context/globalContext';
+import DatePicker from './datePicker';
+import EventModal from './eventModal';
 
 const Header = () => {
   const { monthIndex, setMonthIndex } = useContext(GlobalContext);
@@ -39,7 +39,7 @@ const Header = () => {
     setMonthIndex(selectedMonthIndex);
     setFilterDate(selectedMonthIndex);
 
-    window.dispatchEvent(new Event("storage"));
+    window.dispatchEvent(new Event('storage'));
   }, [selectedMonthIndex, setMonthIndex]);
 
   return (
@@ -60,7 +60,7 @@ const Header = () => {
             <ChevronLeftIcon boxSize="16px" />
           </Button>
           <Text>
-            {dayjs(new Date(dayjs().year(), monthIndex)).format("MMMM YYYY")}
+            {dayjs(new Date(dayjs().year(), monthIndex)).format('MMMM YYYY')}
           </Text>
           <Button
             minW="unset"

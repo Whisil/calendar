@@ -14,13 +14,13 @@ import {
   Textarea,
   Flex,
   Text,
-} from "@chakra-ui/react";
-import { AddIcon, DeleteIcon } from "@chakra-ui/icons";
-import React, { useContext, useEffect, useState } from "react";
+} from '@chakra-ui/react';
+import { AddIcon, DeleteIcon } from '@chakra-ui/icons';
+import React, { useContext, useEffect, useState } from 'react';
 
-import styles from "./styles.module.css";
-import dayjs from "dayjs";
-import GlobalContext from "../../../context/globalContext";
+import styles from './styles.module.css';
+import dayjs from 'dayjs';
+import GlobalContext from '../../../context/globalContext';
 
 const EventModal = ({
   children,
@@ -28,7 +28,7 @@ const EventModal = ({
   selectedEvent,
 }: {
   children?: React.ReactNode;
-  variant?: "add";
+  variant?: 'add';
   selectedEvent?: any;
 }) => {
   const { dispatchCalEvent, selectedDate } = useContext(GlobalContext);
@@ -36,7 +36,7 @@ const EventModal = ({
   const [title, setTitle] = useState<string>(``);
   const [description, setDescription] = useState<string>(``);
   const [date, setDate] = useState<string>(
-    selectedDate || dayjs().format("YYYY-MM-DD")
+    selectedDate || dayjs().format('YYYY-MM-DD'),
   );
   const [beginTime, setBeginTime] = useState<string>(``);
   const [requiredInputTitle, setRequiredInputTitle] = useState<boolean>(false);
@@ -63,23 +63,23 @@ const EventModal = ({
     const calendarEvent = {
       id: selectedEvent
         ? selectedEvent.id
-        : dayjs().format("DD.MM.YYYY HH:mm:ss:ms"),
+        : dayjs().format('DD.MM.YYYY HH:mm:ss:ms'),
       title,
       description,
       date,
       beginTime,
       createdAt: selectedEvent
         ? selectedEvent.createdAt
-        : dayjs().format("DD.MM.YYYY HH:mm"),
+        : dayjs().format('DD.MM.YYYY HH:mm'),
       updatedAt:
         selectedEvent &&
         selectedEvent.createdAt &&
-        dayjs().format("DD.MM.YYYY HH:mm"),
+        dayjs().format('DD.MM.YYYY HH:mm'),
     };
     if (selectedEvent) {
-      dispatchCalEvent({ type: "update", payload: calendarEvent });
+      dispatchCalEvent({ type: 'update', payload: calendarEvent });
     } else {
-      dispatchCalEvent({ type: "push", payload: calendarEvent });
+      dispatchCalEvent({ type: 'push', payload: calendarEvent });
     }
   }
 
@@ -95,7 +95,7 @@ const EventModal = ({
 
   return (
     <>
-      {variant === "add" ? (
+      {variant === 'add' ? (
         <Button
           borderRadius="100%"
           h="48px"
@@ -137,7 +137,7 @@ const EventModal = ({
                   variant="unstyled"
                   borderRadius="0"
                   borderBottom="1px"
-                  borderColor={requiredInputTitle ? "crimson" : "gray.200"}
+                  borderColor={requiredInputTitle ? 'crimson' : 'gray.200'}
                   value={title}
                   onChange={(e) => {
                     setTitle(e.target.value);
@@ -160,7 +160,7 @@ const EventModal = ({
                   borderBottom="1px"
                   borderColor="gray.200"
                   minH="32"
-                  style={{ resize: "none" }}
+                  style={{ resize: 'none' }}
                   onChange={(e) => setDescription(e.target.value)}
                   value={description}
                 />
@@ -174,7 +174,7 @@ const EventModal = ({
                     borderRadius="0"
                     borderBottom="1px"
                     className={styles.datePickerModal}
-                    borderColor={requiredInputDate ? "crimson" : "gray.200"}
+                    borderColor={requiredInputDate ? 'crimson' : 'gray.200'}
                     value={date}
                     onChange={(e) => {
                       setDate(e.target.value);
@@ -213,7 +213,7 @@ const EventModal = ({
                 <Button
                   onClick={() => {
                     dispatchCalEvent({
-                      type: "delete",
+                      type: 'delete',
                       payload: selectedEvent,
                     });
                     handleClose();
@@ -228,17 +228,17 @@ const EventModal = ({
               <Button
                 bg="#000"
                 color="#fff"
-                _hover={title.length !== 0 ? { bg: "rgba(0, 0, 0, 0.8)" } : {}}
+                _hover={title.length !== 0 ? { bg: 'rgba(0, 0, 0, 0.8)' } : {}}
                 _active={
                   title.length !== 0
                     ? {
-                        bg: "rgba(0, 0, 0, 0.6)",
+                        bg: 'rgba(0, 0, 0, 0.6)',
                       }
                     : {}
                 }
                 _disabled={{
-                  bg: "rgba(0, 0, 0, 0.25)",
-                  cursor: "not-allowed",
+                  bg: 'rgba(0, 0, 0, 0.25)',
+                  cursor: 'not-allowed',
                 }}
                 onClick={handleSubmit}
                 isDisabled={title.trim().length === 0 || date.length === 0}

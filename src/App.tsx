@@ -1,9 +1,9 @@
-import { Box } from "@chakra-ui/react";
-import { useContext, useEffect, useState } from "react";
-import CalendarGrid from "./components/calendarGrid";
-import GlobalContext from "./context/globalContext";
-import Header from "./components/header";
-import { getMonth } from "./util";
+import { Box } from '@chakra-ui/react';
+import { useContext, useEffect, useState } from 'react';
+import CalendarGrid from './components/calendarGrid';
+import GlobalContext from './context/globalContext';
+import Header from './components/header';
+import { getMonth } from './util';
 
 function App() {
   const [currentMonth, setCurrentMonth] = useState<any[]>(getMonth());

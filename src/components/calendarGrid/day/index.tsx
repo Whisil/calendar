@@ -1,12 +1,12 @@
-import { Box, Button, Flex, GridItem, Text } from "@chakra-ui/react";
-import dayjs from "dayjs";
-import { useContext, useEffect, useState } from "react";
-import GlobalContext from "../../../context/globalContext";
-import EventModal from "../../header/eventModal";
+import { Box, Button, Flex, GridItem, Text } from '@chakra-ui/react';
+import dayjs from 'dayjs';
+import { useContext, useEffect, useState } from 'react';
+import GlobalContext from '../../../context/globalContext';
+import EventModal from '../../header/eventModal';
 
 interface DayProps {
   day: any;
-  variant?: "picker";
+  variant?: 'picker';
   onClick?(): void;
   selected?: boolean;
   events?: any[];
@@ -17,44 +17,44 @@ const Day = ({ day, variant, onClick, selected, events = [] }: DayProps) => {
   const [dayEvents, setDayEvents] = useState<any[]>([]);
 
   useEffect(() => {
-    if (variant !== "picker") {
+    if (variant !== 'picker') {
       setDayEvents(() =>
-        events.filter((evt) => evt.date === day.format("YYYY-MM-DD"))
+        events.filter((evt) => evt.date === day.format('YYYY-MM-DD')),
       );
     }
   }, [events, day, variant]);
 
   return (
     <GridItem
-      h={variant === "picker" ? "10" : "48"}
-      borderBottom={variant !== "picker" ? "1px" : 0}
-      borderRight={variant !== "picker" ? "1px" : 0}
+      h={variant === 'picker' ? '10' : '48'}
+      borderBottom={variant !== 'picker' ? '1px' : 0}
+      borderRight={variant !== 'picker' ? '1px' : 0}
       borderColor="gray.200"
-      borderRadius={variant !== "picker" ? 0 : "md"}
-      p={variant !== "picker" ? "2" : 0}
+      borderRadius={variant !== 'picker' ? 0 : 'md'}
+      p={variant !== 'picker' ? '2' : 0}
       color={
-        dayjs(new Date(dayjs().year(), monthIndex)).format("MMMM YYYY") ===
-        day.format("MMMM YYYY")
-          ? "black"
-          : "blackAlpha.400"
+        dayjs(new Date(dayjs().year(), monthIndex)).format('MMMM YYYY') ===
+        day.format('MMMM YYYY')
+          ? 'black'
+          : 'blackAlpha.400'
       }
       bgColor={
-        day.format("DD-MM-YY") === dayjs().format("DD-MM-YY")
-          ? "rgb(72, 187, 120, 0.3)"
-          : selectedDate && day.format("YYYY-MM-DD") === selectedDate
-          ? "gray.200"
-          : "transparent"
+        day.format('DD-MM-YY') === dayjs().format('DD-MM-YY')
+          ? 'rgb(72, 187, 120, 0.3)'
+          : selectedDate && day.format('YYYY-MM-DD') === selectedDate
+          ? 'gray.200'
+          : 'transparent'
       }
       transition="color .2s ease"
     >
-      {variant !== "picker" ? (
-        <Flex justify={variant !== "picker" ? "space-between" : "center"}>
+      {variant !== 'picker' ? (
+        <Flex justify={variant !== 'picker' ? 'space-between' : 'center'}>
           <Text fontWeight="bold" fontSize="14px">
-            {day.format("D")}
+            {day.format('D')}
           </Text>
 
           <Text fontWeight="bold" fontSize="14px">
-            {day.format("dd")}
+            {day.format('dd')}
           </Text>
         </Flex>
       ) : (
@@ -68,7 +68,7 @@ const Day = ({ day, variant, onClick, selected, events = [] }: DayProps) => {
           aria-label="day selection"
         >
           <Text fontWeight="bold" fontSize="14px">
-            {day.format("D")}
+            {day.format('D')}
           </Text>
         </Button>
       )}
@@ -94,7 +94,7 @@ const Day = ({ day, variant, onClick, selected, events = [] }: DayProps) => {
                 {item.title}
               </Button>
             </EventModal>
-          )
+          ),
         )}
       </Box>
     </GridItem>

@@ -1,7 +1,7 @@
-import { Grid } from "@chakra-ui/react";
-import React, { useContext } from "react";
-import GlobalContext from "../../context/globalContext";
-import Day from "./day";
+import { Grid } from '@chakra-ui/react';
+import React, { useContext } from 'react';
+import GlobalContext from '../../context/globalContext';
+import Day from './day';
 
 const CalendarGrid = ({ month }: { month: [][] }) => {
   const { savedEvents } = useContext(GlobalContext);
@@ -9,9 +9,9 @@ const CalendarGrid = ({ month }: { month: [][] }) => {
   return (
     <Grid
       templateColumns={{
-        base: "repeat(2, 1fr)",
-        md: "repeat(3, 1fr)",
-        lg: "repeat(7, 1fr)",
+        base: 'repeat(2, 1fr)',
+        md: 'repeat(3, 1fr)',
+        lg: 'repeat(7, 1fr)',
       }}
       borderTop="2px"
       borderBottom="1px"

@@ -1,4 +1,4 @@
-import dayjs from "dayjs";
+import dayjs from 'dayjs';
 
 export function getMonth(month = dayjs().month(), year = dayjs().year()) {
   const firstDayOfMonth = dayjs(new Date(year, month, 1)).day();

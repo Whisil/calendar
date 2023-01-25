@@ -1,11 +1,11 @@
-import { Box, Text, Button, Flex, Grid } from "@chakra-ui/react";
-import { ChevronLeftIcon, ChevronRightIcon } from "@chakra-ui/icons";
-import dayjs from "dayjs";
-import React, { useContext, useEffect, useState } from "react";
-import { getMonth } from "../../../util";
-import Day from "../../calendarGrid/day";
-import GlobalContext from "../../../context/globalContext";
-import { setFilterDate } from "../../../api/date";
+import { Box, Text, Button, Flex, Grid } from '@chakra-ui/react';
+import { ChevronLeftIcon, ChevronRightIcon } from '@chakra-ui/icons';
+import dayjs from 'dayjs';
+import React, { useContext, useEffect, useState } from 'react';
+import { getMonth } from '../../../util';
+import Day from '../../calendarGrid/day';
+import GlobalContext from '../../../context/globalContext';
+import { setFilterDate } from '../../../api/date';
 
 const DatePicker = () => {
   const { setSelectedDate, selectedDate, monthIndex } =
@@ -13,7 +13,7 @@ const DatePicker = () => {
   const [currentMonthIndex, setCurrentMonthIndex] =
     useState<number>(monthIndex);
   const [currentMonth, setCurrentMonth] = useState<any[][]>(
-    getMonth(monthIndex, dayjs().year())
+    getMonth(monthIndex, dayjs().year()),
   );
 
   useEffect(() => {
@@ -21,7 +21,7 @@ const DatePicker = () => {
   }, [currentMonthIndex]);
 
   const handleDaySelected = (day: any) => {
-    if (selectedDate && selectedDate === day.format("YYYY-MM-DD")) {
+    if (selectedDate && selectedDate === day.format('YYYY-MM-DD')) {
       return true;
     } else {
       return false;
@@ -55,7 +55,7 @@ const DatePicker = () => {
         </Button>
         <Text>
           {dayjs(new Date(dayjs().year(), currentMonthIndex)).format(
-            "MMMM YYYY"
+            'MMMM YYYY',
           )}
         </Text>
         <Button
@@ -76,7 +76,7 @@ const DatePicker = () => {
       <Grid templateColumns="repeat(7, 1fr)" templateRows="6">
         {currentMonth[0].map((day, i) => (
           <Flex justify="center" alignItems="center" key={i}>
-            <Text fontWeight="bold">{day.format("dd").charAt(0)}</Text>
+            <Text fontWeight="bold">{day.format('dd').charAt(0)}</Text>
           </Flex>
         ))}
         {currentMonth.map((row, i) => (
@@ -88,9 +88,9 @@ const DatePicker = () => {
                 variant="picker"
                 selected={handleDaySelected(day)}
                 onClick={() => {
-                  setSelectedDate(day.format("YYYY-MM-DD"));
+                  setSelectedDate(day.format('YYYY-MM-DD'));
                   setFilterDate(currentMonthIndex);
-                  window.dispatchEvent(new Event("storage"));
+                  window.dispatchEvent(new Event('storage'));
                 }}
               />
             ))}

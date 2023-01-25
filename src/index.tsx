@@ -2,11 +2,11 @@ import React from 'react';
 import ReactDOM from 'react-dom/client';
 import App from './App';
 import { ChakraProvider, extendTheme } from '@chakra-ui/react';
-import "@fontsource/roboto";
+import '@fontsource/roboto';
 import ContextWrapper from './context/contexWrapper';
 
 const root = ReactDOM.createRoot(
-  document.getElementById('root') as HTMLElement
+  document.getElementById('root') as HTMLElement,
 );
 
 const theme = extendTheme({
@@ -15,10 +15,10 @@ const theme = extendTheme({
   },
   layerStyles: {
     currentMonth: {
-      color: 'black.400'
-    }
+      color: 'black.400',
+    },
   },
-})
+});
 
 root.render(
   <React.StrictMode>
@@ -27,6 +27,5 @@ root.render(
         <App />
       </ContextWrapper>
     </ChakraProvider>
-  </React.StrictMode>
+  </React.StrictMode>,
 );
-
