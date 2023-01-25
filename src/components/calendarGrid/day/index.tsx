@@ -1,20 +1,20 @@
 import { Box, Button, Flex, GridItem, Text } from '@chakra-ui/react';
-import dayjs from 'dayjs';
+import dayjs, { Dayjs } from 'dayjs';
 import { useContext, useEffect, useState } from 'react';
-import GlobalContext from '../../../context/globalContext';
+import GlobalContext, { Event } from '../../../context/globalContext';
 import EventModal from '../../header/eventModal';
 
 interface DayProps {
-  day: any;
+  day: Dayjs;
   variant?: 'picker';
   onClick?(): void;
   selected?: boolean;
-  events?: any[];
+  events?: Event[];
 }
 
 const Day = ({ day, variant, onClick, selected, events = [] }: DayProps) => {
   const { monthIndex, selectedDate } = useContext(GlobalContext);
-  const [dayEvents, setDayEvents] = useState<any[]>([]);
+  const [dayEvents, setDayEvents] = useState<Event[]>([]);
 
   useEffect(() => {
     if (variant !== 'picker') {
@@ -73,29 +73,20 @@ const Day = ({ day, variant, onClick, selected, events = [] }: DayProps) => {
         </Button>
       )}
       <Box overflowY="auto" maxH="36" h="100%">
-        {dayEvents.map(
-          (item: {
-            id: string;
-            title: string;
-            description?: string;
-            date: string;
-            beginTime: string;
-            createdAt: string;
-          }) => (
-            <EventModal key={item.id} selectedEvent={item}>
-              <Button
-                size="xs"
-                colorScheme="gray"
-                w="100%"
-                justifyContent="flex-start"
-                mb="1"
-                aria-label="event selection"
-              >
-                {item.title}
-              </Button>
-            </EventModal>
-          ),
-        )}
+        {dayEvents.map((item: Event) => (
+          <EventModal key={item.id} selectedEvent={item}>
+            <Button
+              size="xs"
+              colorScheme="gray"
+              w="100%"
+              justifyContent="flex-start"
+              mb="1"
+              aria-label="event selection"
+            >
+              {item.title}
+            </Button>
+          </EventModal>
+        ))}
       </Box>
     </GridItem>
   );

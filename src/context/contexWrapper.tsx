@@ -1,36 +1,28 @@
 import dayjs from 'dayjs';
 import React, { useEffect, useReducer, useState } from 'react';
-import GlobalContext from './globalContext';
+import GlobalContext, { Event } from './globalContext';
 import { getFilterMonth } from '../api/date';
 import { getEvents, setEvents } from '../api/events';
 
 function savedEventsReducer(
-  state: any[],
+  state: Event[],
   {
     type,
     payload,
   }: {
     type: string;
-    payload: {
-      id: string;
-      title: string;
-      description: string;
-      date: string;
-      beginTime: string;
-      createdAt: string;
-      updatedAt: string;
-    };
+    payload: Event;
   },
 ) {
   switch (type) {
     case 'push':
       return [...state, payload];
     case 'update':
-      return state.map((evt: any) => {
+      return state.map((evt: Event) => {
         return evt.id === payload.id ? payload : evt;
       });
     case 'delete':
-      return state.filter((evt: any) => evt.id !== payload.id);
+      return state.filter((evt: Event) => evt.id !== payload.id);
     default:
       throw new Error();
   }
@@ -50,7 +42,7 @@ export default function ContextWrapper({
   const [monthIndex, setMonthIndex] = useState<number>(
     getFilterMonth() || dayjs().month(),
   );
-  const [selectedDate, setSelectedDate] = useState(undefined);
+  const [selectedDate, setSelectedDate] = useState<string | null>(null);
   const [savedEvents, dispatchCalEvent] = useReducer(
     savedEventsReducer,
     [],

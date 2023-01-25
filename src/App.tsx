@@ -4,9 +4,10 @@ import CalendarGrid from './components/calendarGrid';
 import GlobalContext from './context/globalContext';
 import Header from './components/header';
 import { getMonth } from './util';
+import { Dayjs } from 'dayjs';
 
 function App() {
-  const [currentMonth, setCurrentMonth] = useState<any[]>(getMonth());
+  const [currentMonth, setCurrentMonth] = useState<Dayjs[][]>(getMonth());
 
   const { monthIndex } = useContext(GlobalContext);
   useEffect(() => {

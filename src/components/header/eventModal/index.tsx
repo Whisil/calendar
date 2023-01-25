@@ -16,11 +16,11 @@ import {
   Text,
 } from '@chakra-ui/react';
 import { AddIcon, DeleteIcon } from '@chakra-ui/icons';
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState, useRef } from 'react';
 
 import styles from './styles.module.css';
 import dayjs from 'dayjs';
-import GlobalContext from '../../../context/globalContext';
+import GlobalContext, { Event } from '../../../context/globalContext';
 
 const EventModal = ({
   children,
@@ -29,7 +29,7 @@ const EventModal = ({
 }: {
   children?: React.ReactNode;
   variant?: 'add';
-  selectedEvent?: any;
+  selectedEvent?: Event;
 }) => {
   const { dispatchCalEvent, selectedDate } = useContext(GlobalContext);
 
@@ -44,6 +44,8 @@ const EventModal = ({
 
   const { isOpen, onOpen, onClose } = useDisclosure();
 
+  const formRef = useRef<HTMLFormElement>(null);
+
   useEffect(() => {
     selectedDate && setDate(selectedDate);
   }, [selectedDate]);
@@ -57,9 +59,10 @@ const EventModal = ({
     setRequiredInputDate(false);
   }
 
-  function handleSubmit(e: any) {
-    handleClose();
+  function handleSubmit(e: React.FormEvent | React.KeyboardEvent) {
     e.preventDefault();
+    handleClose();
+
     const calendarEvent = {
       id: selectedEvent
         ? selectedEvent.id
@@ -92,6 +95,18 @@ const EventModal = ({
       selectedEvent.beginTime && setBeginTime(selectedEvent.beginTime);
     }
   }
+
+  const handleKeyDown = (e: React.KeyboardEvent) => {
+    if (
+      e.key === 'Enter' &&
+      !e.shiftKey &&
+      title.trim().length !== 0 &&
+      date.length !== 0
+    ) {
+      e.preventDefault();
+      formRef!.current!.requestSubmit();
+    }
+  };
 
   return (
     <>
@@ -127,7 +142,7 @@ const EventModal = ({
           </ModalHeader>
 
           <ModalCloseButton aria-label="close modal" />
-          <form>
+          <form onSubmit={handleSubmit} ref={formRef}>
             <ModalBody>
               <FormControl mb="8">
                 <FormHelperText>Title *</FormHelperText>
@@ -161,6 +176,7 @@ const EventModal = ({
                   borderColor="gray.200"
                   minH="32"
                   style={{ resize: 'none' }}
+                  onKeyDown={handleKeyDown}
                   onChange={(e) => setDescription(e.target.value)}
                   value={description}
                 />
@@ -226,6 +242,7 @@ const EventModal = ({
                 </Button>
               )}
               <Button
+                type="submit"
                 bg="#000"
                 color="#fff"
                 _hover={title.length !== 0 ? { bg: 'rgba(0, 0, 0, 0.8)' } : {}}
@@ -240,7 +257,6 @@ const EventModal = ({
                   bg: 'rgba(0, 0, 0, 0.25)',
                   cursor: 'not-allowed',
                 }}
-                onClick={handleSubmit}
                 isDisabled={title.trim().length === 0 || date.length === 0}
                 aria-label="save event"
               >

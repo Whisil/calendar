@@ -1,9 +1,10 @@
 import { Grid } from '@chakra-ui/react';
+import { Dayjs } from 'dayjs';
 import React, { useContext } from 'react';
 import GlobalContext from '../../context/globalContext';
 import Day from './day';
 
-const CalendarGrid = ({ month }: { month: [][] }) => {
+const CalendarGrid = ({ month }: { month: Dayjs[][] }) => {
   const { savedEvents } = useContext(GlobalContext);
 
   return (

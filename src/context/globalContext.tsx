@@ -1,32 +1,33 @@
 import React from 'react';
 
+export interface Event {
+  id: string;
+  title: string;
+  description?: string;
+  date: string;
+  beginTime?: string;
+  createdAt: string;
+  updatedAt?: string;
+}
+
+interface dispatchEventType {
+  type: string;
+  payload: Event;
+}
+
 const GlobalContext = React.createContext<{
   monthIndex: number;
-  setMonthIndex: Function;
-  selectedDate: any;
-  setSelectedDate: Function;
-  dispatchCalEvent: Function;
-  savedEvents: any[];
+  setMonthIndex(index: number): void;
+  selectedDate: string | null;
+  setSelectedDate(day: string | null): void;
+  dispatchCalEvent({ type, payload }: dispatchEventType): void;
+  savedEvents: Event[];
 }>({
   monthIndex: 0,
   setMonthIndex: (index: number) => {},
   selectedDate: null,
-  setSelectedDate: (day: any) => {},
-  dispatchCalEvent: ({
-    type,
-    payload,
-  }: {
-    type: string;
-    payload: {
-      id: string;
-      title: string;
-      description?: string;
-      date: string;
-      beginTime?: string;
-      createdAt: string;
-      updatedAt?: string;
-    };
-  }) => {},
+  setSelectedDate: (day: string | null) => {},
+  dispatchCalEvent: ({ type, payload }: dispatchEventType) => {},
   savedEvents: [],
 });
 

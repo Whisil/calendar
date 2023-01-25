@@ -1,4 +1,6 @@
-export const setEvents = (events: any[]) => {
+import { Event } from '../context/globalContext';
+
+export const setEvents = (events: Event[]) => {
   localStorage.setItem('savedEvents', JSON.stringify(events));
 };
 

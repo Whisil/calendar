@@ -1,6 +1,6 @@
 import { Box, Text, Button, Flex, Grid } from '@chakra-ui/react';
 import { ChevronLeftIcon, ChevronRightIcon } from '@chakra-ui/icons';
-import dayjs from 'dayjs';
+import dayjs, { Dayjs } from 'dayjs';
 import React, { useContext, useEffect, useState } from 'react';
 import { getMonth } from '../../../util';
 import Day from '../../calendarGrid/day';
@@ -12,7 +12,7 @@ const DatePicker = () => {
     useContext(GlobalContext);
   const [currentMonthIndex, setCurrentMonthIndex] =
     useState<number>(monthIndex);
-  const [currentMonth, setCurrentMonth] = useState<any[][]>(
+  const [currentMonth, setCurrentMonth] = useState<Dayjs[][]>(
     getMonth(monthIndex, dayjs().year()),
   );
 
@@ -20,7 +20,7 @@ const DatePicker = () => {
     setCurrentMonth(getMonth(currentMonthIndex, dayjs().year()));
   }, [currentMonthIndex]);
 
-  const handleDaySelected = (day: any) => {
+  const handleDaySelected = (day: Dayjs) => {
     if (selectedDate && selectedDate === day.format('YYYY-MM-DD')) {
       return true;
     } else {
