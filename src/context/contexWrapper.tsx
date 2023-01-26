@@ -50,9 +50,7 @@ export default function ContextWrapper({
   );
 
   const storageStateHandler = () => {
-    if (getFilterMonth()) {
-      setMonthIndex(getFilterMonth());
-    }
+    setMonthIndex(getFilterMonth());
   };
 
   useEffect(() => {

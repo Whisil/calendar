@@ -116,7 +116,7 @@ const EventModal = ({
           h="48px"
           w="48px"
           colorScheme="twitter"
-          boxShadow="xl"
+          boxShadow="md"
           onClick={handleOpen}
           aria-label="open add event modal"
         >

@@ -14,7 +14,7 @@ const Header = () => {
   const [showDatePicker, setShowDatePicker] = useState<boolean>(false);
   const [selectedMonthIndex, setSelectedMonthIndex] =
     useState<number>(monthIndex);
-
+  console.log(selectedMonthIndex);
   const datePickerRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
@@ -38,6 +38,10 @@ const Header = () => {
 
     window.dispatchEvent(new Event('storage'));
   }, [selectedMonthIndex, setMonthIndex]);
+
+  useEffect(() => {
+    setSelectedMonthIndex(monthIndex);
+  }, [monthIndex]);
 
   return (
     <Flex justify="space-between" mb="24px">
