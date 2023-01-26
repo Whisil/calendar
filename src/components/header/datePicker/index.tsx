@@ -8,7 +8,7 @@ import { setFilterDate } from '../../../api/date';
 import ArrowBtn from '../../arrowBtn';
 
 const DatePicker = () => {
-  const { setSelectedDate, selectedDate, monthIndex } =
+  const { setSelectedDate, selectedDate, monthIndex, setEventIsSaving } =
     useContext(GlobalContext);
   const [currentMonthIndex, setCurrentMonthIndex] =
     useState<number>(monthIndex);
@@ -78,7 +78,7 @@ const DatePicker = () => {
                 selected={handleDaySelected(day)}
                 onClick={() => {
                   setSelectedDate(day.format('YYYY-MM-DD'));
-                  setFilterDate(currentMonthIndex);
+                  setFilterDate(currentMonthIndex, setEventIsSaving);
                   window.dispatchEvent(new Event('storage'));
                 }}
               />

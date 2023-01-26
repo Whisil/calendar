@@ -3,6 +3,7 @@ import React, { useEffect, useReducer, useState } from 'react';
 import GlobalContext, { Event } from './globalContext';
 import { getFilterMonth } from '../api/date';
 import { getEvents, setEvents } from '../api/events';
+import { Center, Spinner } from '@chakra-ui/react';
 
 function savedEventsReducer(
   state: Event[],
@@ -43,26 +44,30 @@ export default function ContextWrapper({
     getFilterMonth() || dayjs().month(),
   );
   const [selectedDate, setSelectedDate] = useState<string | null>(null);
+  const [eventIsSaving, setEventIsSaving] = useState(false);
   const [savedEvents, dispatchCalEvent] = useReducer(
     savedEventsReducer,
     [],
     initEvents,
   );
+  const [isLoading, setIsLoading] = useState<boolean>(true);
 
   const storageStateHandler = () => {
     setMonthIndex(getFilterMonth());
   };
 
   useEffect(() => {
-    setEvents(savedEvents);
-  }, [savedEvents]);
+    setEvents(savedEvents, setEventIsSaving);
+    isLoading && setIsLoading(false);
+  }, [savedEvents]); // eslint-disable-line
 
   useEffect(() => {
     storageStateHandler();
     window.addEventListener('storage', () => {
       storageStateHandler();
     });
-    return () => window.removeEventListener('storage', () => {});
+    return () =>
+      window.removeEventListener('storage', () => storageStateHandler());
   }, []);
 
   return (
@@ -74,9 +79,17 @@ export default function ContextWrapper({
         setSelectedDate,
         dispatchCalEvent,
         savedEvents,
+        eventIsSaving,
+        setEventIsSaving,
       }}
     >
-      {children}
+      {isLoading ? (
+        <Center h="100px">
+          <Spinner size="xl" />
+        </Center>
+      ) : (
+        children
+      )}
     </GlobalContext.Provider>
   );
 }

@@ -9,12 +9,13 @@ import DatePicker from './datePicker';
 import EventModal from './eventModal';
 
 const Header = () => {
-  const { monthIndex, setMonthIndex } = useContext(GlobalContext);
+  const { monthIndex, setMonthIndex, setEventIsSaving } =
+    useContext(GlobalContext);
 
   const [showDatePicker, setShowDatePicker] = useState<boolean>(false);
   const [selectedMonthIndex, setSelectedMonthIndex] =
     useState<number>(monthIndex);
-  console.log(selectedMonthIndex);
+
   const datePickerRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
@@ -34,10 +35,10 @@ const Header = () => {
 
   useEffect(() => {
     setMonthIndex(selectedMonthIndex);
-    setFilterDate(selectedMonthIndex);
+    setFilterDate(selectedMonthIndex, setEventIsSaving);
 
     window.dispatchEvent(new Event('storage'));
-  }, [selectedMonthIndex, setMonthIndex]);
+  }, [selectedMonthIndex, setMonthIndex, setEventIsSaving]);
 
   useEffect(() => {
     setSelectedMonthIndex(monthIndex);

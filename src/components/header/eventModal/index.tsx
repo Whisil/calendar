@@ -31,7 +31,8 @@ const EventModal = ({
   variant?: 'add';
   selectedEvent?: Event;
 }) => {
-  const { dispatchCalEvent, selectedDate } = useContext(GlobalContext);
+  const { dispatchCalEvent, selectedDate, eventIsSaving } =
+    useContext(GlobalContext);
 
   const [title, setTitle] = useState<string>(``);
   const [description, setDescription] = useState<string>(``);
@@ -143,126 +144,130 @@ const EventModal = ({
 
           <ModalCloseButton aria-label="close modal" />
           <form onSubmit={handleSubmit} ref={formRef}>
-            <ModalBody>
-              <FormControl mb="8">
-                <FormHelperText>Title *</FormHelperText>
-                <Input
-                  type="text"
-                  autoComplete="off"
-                  variant="unstyled"
-                  borderRadius="0"
-                  borderBottom="1px"
-                  borderColor={requiredInputTitle ? 'crimson' : 'gray.200'}
-                  value={title}
-                  onChange={(e) => {
-                    setTitle(e.target.value);
-                    if (title.length !== 0) {
-                      setRequiredInputTitle(false);
-                    }
-                  }}
-                  onBlur={() =>
-                    title.length === 0
-                      ? setRequiredInputTitle(true)
-                      : setRequiredInputTitle(false)
-                  }
-                />
-              </FormControl>
-              <FormControl mb="4">
-                <FormHelperText>Description</FormHelperText>
-                <Textarea
-                  variant="unstyled"
-                  borderRadius="0"
-                  borderBottom="1px"
-                  borderColor="gray.200"
-                  minH="32"
-                  style={{ resize: 'none' }}
-                  onKeyDown={handleKeyDown}
-                  onChange={(e) => setDescription(e.target.value)}
-                  value={description}
-                />
-              </FormControl>
-              <Flex justify="space-between" align="flex-end">
-                <FormControl w="32">
-                  <FormHelperText>Date *</FormHelperText>
+            <fieldset disabled={eventIsSaving}>
+              <ModalBody>
+                <FormControl mb="8">
+                  <FormHelperText>Title *</FormHelperText>
                   <Input
-                    type="date"
+                    type="text"
+                    autoComplete="off"
                     variant="unstyled"
                     borderRadius="0"
                     borderBottom="1px"
-                    className={styles.datePickerModal}
-                    borderColor={requiredInputDate ? 'crimson' : 'gray.200'}
-                    value={date}
+                    borderColor={requiredInputTitle ? 'crimson' : 'gray.200'}
+                    value={title}
                     onChange={(e) => {
-                      setDate(e.target.value);
-                      if (date.length !== 0) {
-                        setRequiredInputDate(false);
+                      setTitle(e.target.value);
+                      if (title.length !== 0) {
+                        setRequiredInputTitle(false);
                       }
                     }}
                     onBlur={() =>
-                      date?.length === 0
-                        ? setRequiredInputDate(true)
-                        : setRequiredInputDate(false)
+                      title.length === 0
+                        ? setRequiredInputTitle(true)
+                        : setRequiredInputTitle(false)
                     }
                   />
                 </FormControl>
-                <FormControl w="24">
-                  <FormHelperText>
-                    Begin
-                    <br />
-                    Time
-                  </FormHelperText>
-                  <Input
-                    type="time"
+                <FormControl mb="4">
+                  <FormHelperText>Description</FormHelperText>
+                  <Textarea
                     variant="unstyled"
                     borderRadius="0"
                     borderBottom="1px"
                     borderColor="gray.200"
-                    onChange={(e) => setBeginTime(e.target.value)}
-                    value={beginTime}
+                    minH="32"
+                    style={{ resize: 'none' }}
+                    onKeyDown={handleKeyDown}
+                    onChange={(e) => setDescription(e.target.value)}
+                    value={description}
                   />
                 </FormControl>
-              </Flex>
-            </ModalBody>
-
-            <ModalFooter>
-              {selectedEvent && (
-                <Button
-                  onClick={() => {
-                    dispatchCalEvent({
-                      type: 'delete',
-                      payload: selectedEvent,
-                    });
-                    handleClose();
-                  }}
-                  colorScheme="red"
-                  mr={3}
-                  aria-label="delete event"
-                >
-                  <DeleteIcon />
-                </Button>
-              )}
-              <Button
-                type="submit"
-                bg="#000"
-                color="#fff"
-                _hover={title.length !== 0 ? { bg: 'rgba(0, 0, 0, 0.8)' } : {}}
-                _active={
-                  title.length !== 0
-                    ? {
-                        bg: 'rgba(0, 0, 0, 0.6)',
+                <Flex justify="space-between" align="flex-end">
+                  <FormControl w="32">
+                    <FormHelperText>Date *</FormHelperText>
+                    <Input
+                      type="date"
+                      variant="unstyled"
+                      borderRadius="0"
+                      borderBottom="1px"
+                      className={styles.datePickerModal}
+                      borderColor={requiredInputDate ? 'crimson' : 'gray.200'}
+                      value={date}
+                      onChange={(e) => {
+                        setDate(e.target.value);
+                        if (date.length !== 0) {
+                          setRequiredInputDate(false);
+                        }
+                      }}
+                      onBlur={() =>
+                        date?.length === 0
+                          ? setRequiredInputDate(true)
+                          : setRequiredInputDate(false)
                       }
-                    : {}
-                }
-                _disabled={{
-                  bg: 'rgba(0, 0, 0, 0.25)',
-                  cursor: 'not-allowed',
-                }}
-                isDisabled={title.trim().length === 0 || date.length === 0}
-                aria-label="save event"
-              >
-                Save
-              </Button>
-            </ModalFooter>
+                    />
+                  </FormControl>
+                  <FormControl w="24">
+                    <FormHelperText>
+                      Begin
+                      <br />
+                      Time
+                    </FormHelperText>
+                    <Input
+                      type="time"
+                      variant="unstyled"
+                      borderRadius="0"
+                      borderBottom="1px"
+                      borderColor="gray.200"
+                      onChange={(e) => setBeginTime(e.target.value)}
+                      value={beginTime}
+                    />
+                  </FormControl>
+                </Flex>
+              </ModalBody>
+
+              <ModalFooter>
+                {selectedEvent && (
+                  <Button
+                    onClick={() => {
+                      dispatchCalEvent({
+                        type: 'delete',
+                        payload: selectedEvent,
+                      });
+                      handleClose();
+                    }}
+                    colorScheme="red"
+                    mr={3}
+                    aria-label="delete event"
+                  >
+                    <DeleteIcon />
+                  </Button>
+                )}
+                <Button
+                  type="submit"
+                  bg="#000"
+                  color="#fff"
+                  _hover={
+                    title.length !== 0 ? { bg: 'rgba(0, 0, 0, 0.8)' } : {}
+                  }
+                  _active={
+                    title.length !== 0
+                      ? {
+                          bg: 'rgba(0, 0, 0, 0.6)',
+                        }
+                      : {}
+                  }
+                  _disabled={{
+                    bg: 'rgba(0, 0, 0, 0.25)',
+                    cursor: 'not-allowed',
+                  }}
+                  isDisabled={title.trim().length === 0 || date.length === 0}
+                  aria-label="save event"
+                >
+                  Save
+                </Button>
+              </ModalFooter>
+            </fieldset>
           </form>
         </ModalContent>
       </Modal>

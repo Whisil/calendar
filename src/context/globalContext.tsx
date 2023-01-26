@@ -17,11 +17,13 @@ interface dispatchEventType {
 
 const GlobalContext = React.createContext<{
   monthIndex: number;
-  setMonthIndex(index: number): void;
+  setMonthIndex: (index: number) => void;
   selectedDate: string | null;
-  setSelectedDate(day: string | null): void;
-  dispatchCalEvent({ type, payload }: dispatchEventType): void;
+  setSelectedDate: (day: string | null) => void;
+  dispatchCalEvent: ({ type, payload }: dispatchEventType) => void;
   savedEvents: Event[];
+  eventIsSaving: boolean;
+  setEventIsSaving: (indicator: boolean) => void;
 }>({
   monthIndex: 0,
   setMonthIndex: (index: number) => {},
@@ -29,6 +31,8 @@ const GlobalContext = React.createContext<{
   setSelectedDate: (day: string | null) => {},
   dispatchCalEvent: ({ type, payload }: dispatchEventType) => {},
   savedEvents: [],
+  eventIsSaving: false,
+  setEventIsSaving: (indicator: boolean) => {},
 });
 
 export default GlobalContext;
