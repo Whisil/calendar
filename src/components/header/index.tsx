@@ -1,13 +1,10 @@
-import {
-  CalendarIcon,
-  ChevronLeftIcon,
-  ChevronRightIcon,
-} from '@chakra-ui/icons';
+import { CalendarIcon } from '@chakra-ui/icons';
 import { Box, Button, Flex, Text } from '@chakra-ui/react';
 import dayjs from 'dayjs';
 import { useContext, useEffect, useRef, useState } from 'react';
 import { setFilterDate } from '../../api/date';
 import GlobalContext from '../../context/globalContext';
+import ArrowBtn from '../arrowBtn';
 import DatePicker from './datePicker';
 import EventModal from './eventModal';
 
@@ -48,31 +45,18 @@ const Header = () => {
 
       <Flex alignItems="center" gap="15px">
         <Flex alignItems="center" gap="5px">
-          <Button
-            minW="unset"
-            w="24px"
-            h="24px"
-            p="0"
-            bg="transparent"
+          <ArrowBtn
             onClick={() => setSelectedMonthIndex((prevState) => prevState - 1)}
-            aria-label="previous month"
-          >
-            <ChevronLeftIcon boxSize="16px" />
-          </Button>
+            ariaLabel="previous month"
+          />
           <Text>
             {dayjs(new Date(dayjs().year(), monthIndex)).format('MMMM YYYY')}
           </Text>
-          <Button
-            minW="unset"
-            w="24px"
-            h="24px"
-            p="0"
-            bg="transparent"
+          <ArrowBtn
             onClick={() => setSelectedMonthIndex((prevState) => prevState + 1)}
-            aria-label="next month"
-          >
-            <ChevronRightIcon boxSize="16px" />
-          </Button>
+            facingRight
+            ariaLabel="next month"
+          />
         </Flex>
 
         <Box pos="relative" ref={datePickerRef}>
